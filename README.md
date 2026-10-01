@@ -6,6 +6,7 @@ React chat client with a local Node.js messaging gateway.
 - `server` - Node.js API that represents the messaging gateway.
 
 ## Requirements
+
 - Node.js 20.19+
 
 ## How to run

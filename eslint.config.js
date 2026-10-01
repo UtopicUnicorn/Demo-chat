@@ -40,5 +40,11 @@ export default tseslint.config(
       globals: globals.node
     }
   },
+  {
+    files: ["server/**/*.test.ts"],
+    languageOptions: {
+      globals: globals.jest
+    }
+  },
   eslintPluginPrettierRecommended
 );
