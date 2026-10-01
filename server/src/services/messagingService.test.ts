@@ -1,3 +1,5 @@
+import { jest } from "@jest/globals";
+
 import { MessagingService } from "./messagingService.js";
 import { MemoryStore } from "../store/memoryStore.js";
 
@@ -38,5 +40,40 @@ describe("MessagingService", () => {
         text: "Hello"
       })
     ).toBeNull();
+  });
+
+  it("emits chat and message events", () => {
+    const events = {
+      chatUpdated: jest.fn(),
+      messageCreated: jest.fn()
+    };
+    const service = new MessagingService(new MemoryStore(), events);
+    const chat = service.createChat({
+      instanceId: "max-main",
+      recipient: "+79991234567"
+    });
+
+    expect(chat).not.toBeNull();
+    expect(events.chatUpdated).toHaveBeenCalledWith(chat);
+
+    const message = service.createMessage({
+      chatId: chat!.id,
+      text: "Hello"
+    });
+
+    expect(message).not.toBeNull();
+    expect(events.messageCreated).toHaveBeenCalledWith(
+      message,
+      expect.objectContaining({
+        id: chat!.id,
+        lastMessage: message
+      })
+    );
+    expect(events.chatUpdated).toHaveBeenLastCalledWith(
+      expect.objectContaining({
+        id: chat!.id,
+        lastMessage: message
+      })
+    );
   });
 });

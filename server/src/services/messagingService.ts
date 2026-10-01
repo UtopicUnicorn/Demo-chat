@@ -1,16 +1,41 @@
 import { getMessengerAdapter } from "../adapters/adapterRegistry.js";
-import type { CreateChatInput, CreateMessageInput, MessageDirection } from "../domain/messaging.js";
+import type {
+  Chat,
+  CreateChatInput,
+  CreateMessageInput,
+  Message,
+  MessageDirection
+} from "../domain/messaging.js";
 import type { MemoryStore } from "../store/memoryStore.js";
 
+export type MessagingEvents = {
+  chatUpdated(chat: Chat): void;
+  messageCreated(message: Message, chat: Chat): void;
+};
+
+const noopMessagingEvents: MessagingEvents = {
+  chatUpdated() {},
+  messageCreated() {}
+};
+
 export class MessagingService {
-  constructor(private readonly store: MemoryStore) {}
+  constructor(
+    private readonly store: MemoryStore,
+    private readonly events: MessagingEvents = noopMessagingEvents
+  ) {}
 
   listChats(instanceId?: string) {
     return this.store.listChats(instanceId);
   }
 
   createChat(input: CreateChatInput) {
-    return this.store.createChat(input);
+    const chat = this.store.createChat(input);
+
+    if (chat) {
+      this.events.chatUpdated(chat);
+    }
+
+    return chat;
   }
 
   listMessages(chatId: string) {
@@ -43,7 +68,7 @@ export class MessagingService {
       text: input.text
     });
 
-    return this.store.createMessage(
+    const message = this.store.createMessage(
       {
         chatId: chat.id,
         providerChatId: payload.providerChatId,
@@ -52,5 +77,14 @@ export class MessagingService {
       },
       payload.direction
     );
+
+    const updatedChat = this.store.getChat(chat.id);
+
+    if (message && updatedChat) {
+      this.events.messageCreated(message, updatedChat);
+      this.events.chatUpdated(updatedChat);
+    }
+
+    return message;
   }
 }
