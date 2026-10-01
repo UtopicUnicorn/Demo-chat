@@ -3,6 +3,7 @@ import type { NextFunction, Request, Response } from "express";
 
 import { createChatsController } from "./chatsController.js";
 import { HttpError } from "../http/httpError.js";
+import { MessagingService } from "../services/messagingService.js";
 import { MemoryStore } from "../store/memoryStore.js";
 
 function createResponse() {
@@ -30,7 +31,7 @@ function asNextFunction(next: ReturnType<typeof createNext>) {
 describe("createChatsController", () => {
   it("lists chats filtered by instance id", () => {
     const store = new MemoryStore();
-    const controller = createChatsController(store);
+    const controller = createChatsController(new MessagingService(store));
     const response = createResponse();
     const next = createNext();
 
@@ -65,7 +66,7 @@ describe("createChatsController", () => {
   });
 
   it("creates a chat response", () => {
-    const controller = createChatsController(new MemoryStore());
+    const controller = createChatsController(new MessagingService(new MemoryStore()));
     const response = createResponse();
     const next = createNext();
 
@@ -94,7 +95,7 @@ describe("createChatsController", () => {
   });
 
   it("passes validation errors to next middleware", () => {
-    const controller = createChatsController(new MemoryStore());
+    const controller = createChatsController(new MessagingService(new MemoryStore()));
     const response = createResponse();
     const next = createNext();
 
@@ -114,7 +115,7 @@ describe("createChatsController", () => {
   });
 
   it("passes unknown instance errors to next middleware", () => {
-    const controller = createChatsController(new MemoryStore());
+    const controller = createChatsController(new MessagingService(new MemoryStore()));
     const response = createResponse();
     const next = createNext();
 
@@ -136,7 +137,7 @@ describe("createChatsController", () => {
 
   it("lists chat messages", () => {
     const store = new MemoryStore();
-    const controller = createChatsController(store);
+    const controller = createChatsController(new MessagingService(store));
     const response = createResponse();
     const next = createNext();
     const chat = store.createChat({
@@ -173,7 +174,7 @@ describe("createChatsController", () => {
 
   it("creates an outgoing message response", () => {
     const store = new MemoryStore();
-    const controller = createChatsController(store);
+    const controller = createChatsController(new MessagingService(store));
     const response = createResponse();
     const next = createNext();
     const chat = store.createChat({
@@ -209,7 +210,7 @@ describe("createChatsController", () => {
 
   it("creates an incoming message response", () => {
     const store = new MemoryStore();
-    const controller = createChatsController(store);
+    const controller = createChatsController(new MessagingService(store));
     const response = createResponse();
     const next = createNext();
     const chat = store.createChat({
@@ -244,7 +245,7 @@ describe("createChatsController", () => {
   });
 
   it("passes unknown chat errors to next middleware", () => {
-    const controller = createChatsController(new MemoryStore());
+    const controller = createChatsController(new MessagingService(new MemoryStore()));
     const response = createResponse();
     const next = createNext();
 

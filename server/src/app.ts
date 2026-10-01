@@ -5,10 +5,12 @@ import { config } from "./config.js";
 import { errorMiddleware } from "./http/errorMiddleware.js";
 import { createChatsRouter } from "./routes/chats.js";
 import { createInstancesRouter } from "./routes/instances.js";
+import { MessagingService } from "./services/messagingService.js";
 import { memoryStore, type MemoryStore } from "./store/memoryStore.js";
 
 export function createApp(store: MemoryStore = memoryStore) {
   const app = express();
+  const messagingService = new MessagingService(store);
 
   app.use(
     cors({
@@ -32,7 +34,7 @@ export function createApp(store: MemoryStore = memoryStore) {
   });
 
   app.use("/api/instances", createInstancesRouter(store));
-  app.use("/api/chats", createChatsRouter(store));
+  app.use("/api/chats", createChatsRouter(messagingService));
   app.use(errorMiddleware);
 
   return app;

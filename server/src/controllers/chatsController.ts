@@ -7,22 +7,22 @@ import {
   readRequiredString,
   readRouteParam
 } from "../http/validate.js";
-import type { MemoryStore } from "../store/memoryStore.js";
+import type { MessagingService } from "../services/messagingService.js";
 
-export function createChatsController(store: MemoryStore) {
+export function createChatsController(messagingService: MessagingService) {
   const listChats: RequestHandler = (request, response) => {
     const instanceId =
       typeof request.query.instanceId === "string" ? request.query.instanceId : undefined;
 
     response.json({
-      data: store.listChats(instanceId)
+      data: messagingService.listChats(instanceId)
     });
   };
 
   const createChat: RequestHandler = (request, response, next) => {
     try {
       const body = readBody(request.body);
-      const chat = store.createChat({
+      const chat = messagingService.createChat({
         instanceId: readRequiredString(body, "instanceId"),
         recipient: readRequiredString(body, "recipient"),
         title: readOptionalString(body, "title")
@@ -43,7 +43,7 @@ export function createChatsController(store: MemoryStore) {
   const listMessages: RequestHandler = (request, response, next) => {
     try {
       const chatId = readRouteParam(request.params.chatId, "chatId");
-      const messages = store.listMessages(chatId);
+      const messages = messagingService.listMessages(chatId);
 
       if (!messages) {
         throw new HttpError(404, "Chat not found");
@@ -61,7 +61,7 @@ export function createChatsController(store: MemoryStore) {
     try {
       const body = readBody(request.body);
       const chatId = readRouteParam(request.params.chatId, "chatId");
-      const message = store.createMessage({
+      const message = messagingService.createMessage({
         chatId,
         text: readRequiredString(body, "text")
       });
@@ -82,7 +82,7 @@ export function createChatsController(store: MemoryStore) {
     try {
       const body = readBody(request.body);
       const chatId = readRouteParam(request.params.chatId, "chatId");
-      const message = store.createMessage(
+      const message = messagingService.createMessage(
         {
           chatId,
           text: readRequiredString(body, "text")

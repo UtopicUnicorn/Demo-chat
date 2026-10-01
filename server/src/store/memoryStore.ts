@@ -102,7 +102,10 @@ export class MemoryStore {
       id: randomUUID(),
       chatId: chat.id,
       instanceId: chat.instanceId,
+      messenger: chat.messenger,
       direction,
+      providerChatId: input.providerChatId ?? chat.recipient,
+      providerMessageId: input.providerMessageId ?? randomUUID(),
       text: input.text,
       status: direction === "outgoing" ? "sent" : "delivered",
       createdAt: now()
