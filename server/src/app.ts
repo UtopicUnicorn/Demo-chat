@@ -8,9 +8,11 @@ import { createInstancesRouter } from "./routes/instances.js";
 import { MessagingService } from "./services/messagingService.js";
 import { memoryStore, type MemoryStore } from "./store/memoryStore.js";
 
-export function createApp(store: MemoryStore = memoryStore) {
+export function createApp(
+  store: MemoryStore = memoryStore,
+  messagingService: MessagingService = new MessagingService(store)
+) {
   const app = express();
-  const messagingService = new MessagingService(store);
 
   app.use(
     cors({
