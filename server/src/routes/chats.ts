@@ -1,11 +1,11 @@
 import { Router } from "express";
 
 import { createChatsController } from "../controllers/chatsController.js";
-import type { MemoryStore } from "../store/memoryStore.js";
+import type { MessagingService } from "../services/messagingService.js";
 
-export function createChatsRouter(store: MemoryStore) {
+export function createChatsRouter(messagingService: MessagingService) {
   const router = Router();
-  const controller = createChatsController(store);
+  const controller = createChatsController(messagingService);
 
   router.get("/", controller.listChats);
   router.post("/", controller.createChat);

@@ -31,7 +31,10 @@ export type Message = {
   id: string;
   chatId: string;
   instanceId: string;
+  messenger: MessengerType;
   direction: MessageDirection;
+  providerChatId: string;
+  providerMessageId: string;
   text: string;
   status: MessageStatus;
   createdAt: string;
@@ -45,5 +48,7 @@ export type CreateChatInput = {
 
 export type CreateMessageInput = {
   chatId: string;
+  providerChatId?: string;
+  providerMessageId?: string;
   text: string;
 };
