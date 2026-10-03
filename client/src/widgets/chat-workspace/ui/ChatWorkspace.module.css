@@ -38,6 +38,26 @@
   font-weight: 700;
 }
 
+.connectionStatus[data-status="checking"],
+.connectionStatus[data-status="connecting"] {
+  color: #6c4a00;
+  background: #fff4cf;
+  border-color: #f2d37a;
+}
+
+.connectionStatus[data-status="unavailable"],
+.connectionStatus[data-status="error"] {
+  color: #7a1e22;
+  background: #fde4e5;
+  border-color: #f1a8ad;
+}
+
+.connectionStatus[data-status="idle"] {
+  color: #465564;
+  background: #edf2f7;
+  border-color: #cbd6e2;
+}
+
 .sessionBar {
   display: flex;
   flex-wrap: wrap;
@@ -60,7 +80,8 @@
 }
 
 .newChatBar {
-  display: flex;
+  display: grid;
+  gap: 8px;
   padding: 10px;
   border-bottom: 1px solid #dbe3eb;
   background: rgba(255, 255, 255, 0.74);
@@ -76,6 +97,18 @@
   background: var(--chat-accent);
   font-weight: 800;
   cursor: pointer;
+}
+
+.newChatButton:disabled {
+  color: #82909e;
+  background: #d9e1e8;
+  cursor: not-allowed;
+}
+
+.apiError {
+  color: #9d242b;
+  font-size: 13px;
+  font-weight: 700;
 }
 
 .conversation {
