@@ -1,0 +1,29 @@
+.instanceTabs {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+  padding: 0 16px 12px;
+}
+
+.instanceTab {
+  min-width: 0;
+  min-height: 38px;
+  border: 1px solid #cfd8e3;
+  border-radius: 8px;
+  color: #405160;
+  background: rgba(255, 255, 255, 0.72);
+  cursor: pointer;
+}
+
+.instanceTab[aria-pressed="true"] {
+  border-color: color-mix(in srgb, var(--chat-accent) 60%, #ffffff);
+  color: #ffffff;
+  background: var(--chat-accent);
+}
+
+@media (min-width: 860px) {
+  .instanceTabs {
+    max-width: 520px;
+    padding: 0 0 14px;
+  }
+}

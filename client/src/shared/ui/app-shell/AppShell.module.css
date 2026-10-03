@@ -1,0 +1,10 @@
+.app {
+  min-height: 100vh;
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--chat-accent) 18%, #ffffff) 0%,
+      transparent 260px
+    ),
+    #e9eef3;
+}

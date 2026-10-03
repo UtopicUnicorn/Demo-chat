@@ -1,7 +1,5 @@
+import { ChatWorkspace } from "@/widgets/chat-workspace/ui/ChatWorkspace";
+
 export function App() {
-  return (
-    <main className="app">
-      <h1>Demo Messenger Chat</h1>
-    </main>
-  );
+  return <ChatWorkspace />;
 }
