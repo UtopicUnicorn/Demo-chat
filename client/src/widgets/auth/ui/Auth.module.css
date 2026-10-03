@@ -1,0 +1,63 @@
+.container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 20px;
+    padding-top: 15vh;
+    padding-left: 14px;
+    padding-right: 14px;
+    min-height: 100vh;
+    box-sizing: border-box;
+    border: 1px solid rgba(169, 182, 196, 0.8);
+    border-radius: 8px;
+    background: #ffffff;
+    height: 100vh;
+}
+
+.phoneForm {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    padding: 24px;
+    border: 1px solid rgba(169, 182,196, 0.8);
+    border-radius: 12px;
+    background-color: #fff;
+    width: 100%;
+    max-width: 360px;
+}
+
+.fieldLabel {
+    color: #465564;
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.input {
+    min-height: 40px;
+    min-width: 0;
+    padding: 0 12px;
+    border: 1px solid #cbd6e2;
+    border-radius: 8px;
+    color: #15202b;
+    background: #ffffff;
+    font: inherit;
+}
+.sendButton {
+    width: 100%;
+    min-height: 40px;
+    padding: 0 12px;
+    border: 0;
+    border-radius: 8px;
+    color: #ffffff;
+    background: var(--chat-accent);
+    font-weight: 800;
+    cursor: pointer;
+    margin-top: 25px;
+
+    &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+}
