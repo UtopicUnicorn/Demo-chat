@@ -1,6 +1,14 @@
+@property --chat-accent {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #2f6fed;
+}
+
 :root {
+  --chat-accent: #2f6fed;
+
   color: #17202a;
-  background: #f7f9fb;
+  background: #e9eef3;
   font-family:
     Inter,
     ui-sans-serif,
@@ -11,6 +19,18 @@
     sans-serif;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
+}
+
+[data-accent="max"] {
+  --chat-accent: #2f6fed;
+}
+
+[data-accent="telegram"] {
+  --chat-accent: #229ed9;
+}
+
+[data-accent="whatsapp"] {
+  --chat-accent: #24a866;
 }
 
 * {
@@ -28,23 +48,12 @@ input {
   font: inherit;
 }
 
-.app {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  padding: 28px;
-  text-align: center;
+button {
+  color: inherit;
 }
 
-h1 {
-  margin: 0;
-  font-size: 32px;
-  line-height: 1.15;
-}
-
+h1,
+h2,
 p {
-  margin: 12px 0 0;
-  color: #5d6b78;
+  margin: 0;
 }

@@ -1,0 +1,47 @@
+.messageList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 14px;
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--chat-accent) 7%, transparent) 0%,
+      transparent 42%
+    ),
+    #f5f8fb;
+}
+
+.messageBubble {
+  display: grid;
+  gap: 6px;
+  max-width: min(82%, 520px);
+  padding: 10px 12px;
+  border-radius: 8px;
+  box-shadow: 0 1px 2px rgba(31, 45, 61, 0.08);
+}
+
+.messageBubble[data-direction="incoming"] {
+  align-self: flex-start;
+  background: #ffffff;
+}
+
+.messageBubble[data-direction="outgoing"] {
+  align-self: flex-end;
+  color: #ffffff;
+  background: var(--chat-accent);
+}
+
+.messageText {
+  overflow-wrap: anywhere;
+  line-height: 1.35;
+}
+
+.messageTime {
+  justify-self: end;
+  color: currentColor;
+  font-size: 11px;
+  opacity: 0.72;
+}

@@ -1,0 +1,69 @@
+.chatList {
+  display: grid;
+  align-content: start;
+  gap: 8px;
+  min-height: 0;
+  max-height: 100%;
+  overflow-y: auto;
+  padding: 10px;
+}
+
+.chatListItem {
+  display: grid;
+  grid-template-columns: 38px minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  text-align: left;
+  background: rgba(255, 255, 255, 0.82);
+  box-shadow: 0 8px 24px rgba(31, 45, 61, 0.08);
+  cursor: pointer;
+}
+
+.chatListItem[data-active="true"] {
+  border-color: color-mix(in srgb, var(--chat-accent) 52%, #ffffff);
+  background: color-mix(in srgb, var(--chat-accent) 10%, #ffffff);
+}
+
+.avatar {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 8px;
+  color: #ffffff;
+  background: var(--chat-accent);
+  font-weight: 800;
+}
+
+.chatMeta {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+}
+
+.chatTitle {
+  overflow: hidden;
+  color: #17202a;
+  font-weight: 800;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.chatPreview {
+  overflow: hidden;
+  color: #667785;
+  font-size: 13px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (min-width: 860px) {
+  .chatList {
+    padding: 12px;
+  }
+}
