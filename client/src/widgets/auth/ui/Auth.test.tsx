@@ -8,10 +8,10 @@ import AuthWithPhone from "@/widgets/auth/ui/Auth";
 
 function renderAuth() {
   render(
-    <MemoryRouter initialEntries={["/"]}>
+    <MemoryRouter initialEntries={["/auth"]}>
       <Routes>
-        <Route element={<AuthWithPhone />} path="/" />
-        <Route element={<h1>Чаты</h1>} path="/chats" />
+        <Route element={<AuthWithPhone />} path="/auth" />
+        <Route element={<h1>Чаты</h1>} path="/" />
       </Routes>
     </MemoryRouter>
   );

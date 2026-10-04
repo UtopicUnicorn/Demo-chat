@@ -14,7 +14,7 @@ export default function AuthWithPhone() {
       return;
     }
     localStorage.setItem(PHONE_STORAGE_KEY, trimmedPhoneNumber);
-    navigate("/chats", { replace: true });
+    navigate("/", { replace: true });
   }
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {

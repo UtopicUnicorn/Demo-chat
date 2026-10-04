@@ -35,7 +35,9 @@ describe("App", () => {
     });
   });
 
-  it("renders the login page at the public root route", async () => {
+  it("renders the login page at the auth route", async () => {
+    window.history.pushState({}, "", "/auth");
+
     render(<App />);
 
     expect(await screen.findByRole("heading", { name: "Вход в чат" })).toBeInTheDocument();
