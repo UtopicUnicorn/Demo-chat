@@ -1,5 +1,7 @@
-import { ChatWorkspace } from "@/widgets/chat-workspace/ui/ChatWorkspace";
+import { RouterProvider } from "react-router-dom";
+
+import { router } from "@/router";
 
 export function App() {
-  return <ChatWorkspace />;
+  return <RouterProvider router={router} />;
 }

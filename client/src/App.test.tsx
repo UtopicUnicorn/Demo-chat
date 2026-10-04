@@ -7,6 +7,7 @@ import { demoMessages } from "@/entities/message/model/demoMessages";
 
 describe("App", () => {
   beforeEach(() => {
+    localStorage.clear();
     globalThis.fetch = jest.fn<typeof fetch>().mockImplementation(async (input) => {
       const url = String(input);
 
@@ -34,10 +35,9 @@ describe("App", () => {
     });
   });
 
-  it("renders the chat workspace", async () => {
+  it("renders the login page at the public root route", async () => {
     render(<App />);
 
-    expect(await screen.findByRole("heading", { name: "Демо чат" })).toBeInTheDocument();
-    expect(await screen.findByText("Бэкенд доступен")).toBeInTheDocument();
+    expect(await screen.findByRole("heading", { name: "Вход в чат" })).toBeInTheDocument();
   });
 });
