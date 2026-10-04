@@ -80,3 +80,5 @@ npm test
 5. Limited realtime recovery: the client reconnects through Socket.IO, but missed events are not reconciled with a dedicated sync step.
 6. No message delivery states beyond the demo model: statuses are present, but there is no full delivery/read lifecycle.
 7. No backend integration with real messengers: messenger instances are mocked and adapter behavior is local to the demo.
+8. There are some visuals to be improved on mobile layout
+9. Missed messages after websocket reconnect doesn't show
