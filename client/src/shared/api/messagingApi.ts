@@ -6,8 +6,14 @@ type ApiResponse<TData> = {
 
 export type CreateChatPayload = {
   instanceId: string;
+  phone: string;
   recipient: string;
   title?: string;
+};
+
+export type CreateMessagePayload = {
+  phone: string;
+  text: string;
 };
 
 async function readApiData<TData>(response: Response) {
@@ -41,19 +47,35 @@ export const messagingApi = {
     return readApiData<Chat>(response);
   },
 
-  async listChats(instanceId: string) {
+  async listChats(instanceId: string, phone: string) {
     const query = new URLSearchParams({
-      instanceId
+      instanceId,
+      phone
     });
     const response = await fetch(`/api/chats?${query.toString()}`);
 
     return readApiData<Chat[]>(response);
   },
 
-  async listMessages(chatId: string) {
-    const response = await fetch(`/api/chats/${chatId}/messages`);
+  async listMessages(chatId: string, phone: string) {
+    const query = new URLSearchParams({
+      phone
+    });
+    const response = await fetch(`/api/chats/${chatId}/messages?${query.toString()}`);
 
     return readApiData<Message[]>(response);
+  },
+
+  async sendMessage(chatId: string, payload: CreateMessagePayload) {
+    const response = await fetch(`/api/chats/${chatId}/messages`, {
+      body: JSON.stringify(payload),
+      headers: {
+        "Content-Type": "application/json"
+      },
+      method: "POST"
+    });
+
+    return readApiData<Message>(response);
   }
 };
 
