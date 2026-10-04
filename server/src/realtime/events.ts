@@ -23,6 +23,7 @@ export type RealtimeAck<TData = unknown> =
 
 export type MessageCommandPayload = {
   chatId: string;
+  phone?: string;
   text: string;
 };
 

@@ -43,6 +43,7 @@ export function parseMessageCommandPayload(payload: unknown) {
 
   return {
     chatId: body.chatId.trim(),
+    phone: hasRequiredString(body.phone) ? body.phone.trim() : undefined,
     text: body.text.trim()
   };
 }

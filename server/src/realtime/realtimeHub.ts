@@ -123,7 +123,14 @@ export class RealtimeHub implements MessagingEvents {
       return;
     }
 
-    const message = this.messagingService.createMessage(parsedPayload, direction);
+    const message = this.messagingService.createMessage(
+      {
+        chatId: parsedPayload.chatId,
+        senderPhone: parsedPayload.phone,
+        text: parsedPayload.text
+      },
+      direction
+    );
 
     if (!message) {
       emitAckError(ack, "Chat not found");

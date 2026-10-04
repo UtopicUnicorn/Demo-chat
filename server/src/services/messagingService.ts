@@ -24,7 +24,11 @@ export class MessagingService {
     private readonly events: MessagingEvents = noopMessagingEvents
   ) {}
 
-  listChats(instanceId?: string) {
+  listChats(instanceId?: string, phone?: string) {
+    if (phone) {
+      return this.store.listChatsForPhone(instanceId, phone);
+    }
+
     return this.store.listChats(instanceId);
   }
 
@@ -38,7 +42,11 @@ export class MessagingService {
     return chat;
   }
 
-  listMessages(chatId: string) {
+  listMessages(chatId: string, phone?: string) {
+    if (phone) {
+      return this.store.listMessagesForPhone(chatId, phone);
+    }
+
     return this.store.listMessages(chatId);
   }
 
@@ -60,9 +68,16 @@ export class MessagingService {
     if (!adapter) {
       return null;
     }
+    const recipient =
+      input.senderPhone && chat.participantPhones.includes(input.senderPhone)
+        ? (chat.participantPhones.find((phone) => phone !== input.senderPhone) ?? chat.recipient)
+        : chat.recipient;
 
     const payload = adapter.createMessagePayload({
-      chat,
+      chat: {
+        ...chat,
+        recipient
+      },
       direction,
       instance,
       text: input.text
@@ -71,6 +86,7 @@ export class MessagingService {
     const message = this.store.createMessage(
       {
         chatId: chat.id,
+        senderPhone: input.senderPhone,
         providerChatId: payload.providerChatId,
         providerMessageId: payload.providerMessageId,
         text: payload.text
