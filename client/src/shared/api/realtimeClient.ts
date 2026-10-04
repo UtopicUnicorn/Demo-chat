@@ -26,6 +26,7 @@ export type ChatRealtimeOptions = {
   onChatUpdated(chat: Chat): void;
   onMessageCreated(event: MessageCreatedEvent): void;
   onStatusChange(status: RealtimeStatus): void;
+  phone: string;
 };
 
 export type ChatRealtimeConnection = {
@@ -42,7 +43,8 @@ export function openChatRealtime({
   chatId,
   onChatUpdated,
   onMessageCreated,
-  onStatusChange
+  onStatusChange,
+  phone
 }: ChatRealtimeOptions): ChatRealtimeConnection {
   onStatusChange("connecting");
 
@@ -73,7 +75,7 @@ export function openChatRealtime({
       return socket.connected;
     },
     sendMessage(text: string) {
-      socket.emit("message:send", { chatId, text }, (ack: RealtimeAck<Message>) => {
+      socket.emit("message:send", { chatId, phone, text }, (ack: RealtimeAck<Message>) => {
         if (!ack.ok) {
           onStatusChange("error");
         }

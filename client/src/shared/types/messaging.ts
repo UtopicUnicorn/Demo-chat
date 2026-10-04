@@ -18,6 +18,8 @@ export type Chat = {
   id: string;
   instanceId: string;
   messenger: MessengerType;
+  ownerPhone?: string;
+  participantPhones: string[];
   title: string;
   recipient: string;
   createdAt: string;
@@ -30,6 +32,7 @@ export type Message = {
   chatId: string;
   instanceId: string;
   messenger: MessengerType;
+  senderPhone?: string;
   direction: MessageDirection;
   providerChatId: string;
   providerMessageId: string;

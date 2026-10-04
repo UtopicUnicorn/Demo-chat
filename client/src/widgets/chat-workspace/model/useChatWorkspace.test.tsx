@@ -8,19 +8,21 @@ import {
 import { useChatWorkspace } from "@/widgets/chat-workspace/model/useChatWorkspace";
 
 describe("useChatWorkspace", () => {
+  const currentUserPhone = "+70000000000";
+
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
   it("checks health once and caches chats per messenger instance", async () => {
     const api = createApiMock();
-    const { result } = renderHook(() => useChatWorkspace({ api }));
+    const { result } = renderHook(() => useChatWorkspace({ api, currentUserPhone }));
 
     await waitFor(() => expect(result.current.visibleChats).toHaveLength(1));
 
     expect(api.checkHealth).toHaveBeenCalledTimes(1);
     expect(api.listChats).toHaveBeenCalledTimes(1);
-    expect(api.listChats).toHaveBeenNthCalledWith(1, "max-main");
+    expect(api.listChats).toHaveBeenNthCalledWith(1, "max-main", currentUserPhone);
     expect(api.listMessages).not.toHaveBeenCalled();
     expect(result.current.activeChat).toBeUndefined();
 
@@ -32,14 +34,16 @@ describe("useChatWorkspace", () => {
 
     expect(api.checkHealth).toHaveBeenCalledTimes(1);
     expect(api.listChats).toHaveBeenCalledTimes(2);
-    expect(api.listChats).toHaveBeenNthCalledWith(2, "telegram-main");
+    expect(api.listChats).toHaveBeenNthCalledWith(2, "telegram-main", currentUserPhone);
     expect(api.listMessages).not.toHaveBeenCalled();
   });
 
   it("loads messages only after selecting a chat and does not reload cached messages", async () => {
     const api = createApiMock();
     const { realtimeFactory } = createRealtimeFactoryMock();
-    const { result } = renderHook(() => useChatWorkspace({ api, realtimeFactory }));
+    const { result } = renderHook(() =>
+      useChatWorkspace({ api, currentUserPhone, realtimeFactory })
+    );
 
     await waitFor(() => expect(result.current.visibleChats[0]?.id).toBe("max-alex"));
     expect(api.listMessages).not.toHaveBeenCalled();
@@ -51,7 +55,7 @@ describe("useChatWorkspace", () => {
         expect.arrayContaining([expect.objectContaining({ chatId: "max-alex" })])
       )
     );
-    expect(api.listMessages).toHaveBeenCalledWith("max-alex");
+    expect(api.listMessages).toHaveBeenCalledWith("max-alex", currentUserPhone);
 
     act(() => result.current.closeConversation());
     act(() => result.current.selectChat("max-alex"));
@@ -62,7 +66,9 @@ describe("useChatWorkspace", () => {
   it("restores the websocket connection for a previously opened instance chat", async () => {
     const api = createApiMock();
     const { connection, realtimeFactory } = createRealtimeFactoryMock();
-    const { result } = renderHook(() => useChatWorkspace({ api, realtimeFactory }));
+    const { result } = renderHook(() =>
+      useChatWorkspace({ api, currentUserPhone, realtimeFactory })
+    );
 
     await waitFor(() => expect(result.current.visibleChats[0]?.id).toBe("max-alex"));
 
@@ -93,9 +99,15 @@ describe("useChatWorkspace", () => {
   it("creates a chat for the active instance and opens it", async () => {
     const api = createApiMock();
     const { realtimeFactory } = createRealtimeFactoryMock();
-    const { result } = renderHook(() => useChatWorkspace({ api, realtimeFactory }));
+    const { result } = renderHook(() =>
+      useChatWorkspace({ api, currentUserPhone, realtimeFactory })
+    );
 
     await waitFor(() => expect(result.current.visibleChats[0]?.id).toBe("max-alex"));
+
+    act(() => {
+      result.current.setNewChatRecipient("+79991234567");
+    });
 
     await act(async () => {
       await result.current.createChat();
@@ -103,8 +115,8 @@ describe("useChatWorkspace", () => {
 
     expect(api.createChat).toHaveBeenCalledWith({
       instanceId: "max-main",
-      recipient: "demo-chat-2",
-      title: "Новый чат"
+      phone: currentUserPhone,
+      recipient: "+79991234567"
     });
     expect(result.current.activeChat?.id).toBe("max-main-created-chat");
     expect(result.current.isConversationOpen).toBe(true);

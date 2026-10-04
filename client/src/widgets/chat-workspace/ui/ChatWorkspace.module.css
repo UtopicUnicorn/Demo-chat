@@ -27,6 +27,13 @@
   line-height: 1.15;
 }
 
+.currentUser {
+  margin-top: 4px;
+  color: #667785;
+  font-size: 13px;
+  font-weight: 700;
+}
+
 .connectionStatus {
   flex: 0 0 auto;
   padding: 6px 10px;
@@ -58,6 +65,13 @@
   border-color: #cbd6e2;
 }
 
+.connectionStatus[data-status="logout"] {
+  color: white;
+  background: red;
+  border-color: #cbd6e2;
+  justify-self: flex-end;
+}
+
 .sessionBar {
   display: flex;
   flex-wrap: wrap;
@@ -85,6 +99,34 @@
   padding: 10px;
   border-bottom: 1px solid #dbe3eb;
   background: rgba(255, 255, 255, 0.74);
+}
+
+.loginPanel {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px;
+  border: 1px solid rgba(169, 182, 196, 0.8);
+  border-radius: 8px;
+  background: #ffffff;
+  height: fit-content;
+}
+
+.fieldLabel {
+  color: #465564;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.input {
+  min-height: 40px;
+  min-width: 0;
+  padding: 0 12px;
+  border: 1px solid #cbd6e2;
+  border-radius: 8px;
+  color: #15202b;
+  background: #ffffff;
+  font: inherit;
 }
 
 .newChatButton {
@@ -230,7 +272,11 @@
     cursor: pointer;
   }
 }
-
+.logout {
+  height: 40px;
+  width: fit-content;
+  border-radius: 14px;
+}
 @media (min-width: 860px) {
   .workspace {
     grid-template-rows: auto auto minmax(0, 1fr);

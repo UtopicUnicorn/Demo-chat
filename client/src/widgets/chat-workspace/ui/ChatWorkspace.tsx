@@ -11,9 +11,12 @@ import {
 } from "@/widgets/chat-workspace/model/useChatWorkspace";
 import styles from "./ChatWorkspace.module.css";
 
-type ChatWorkspaceProps = UseChatWorkspaceOptions;
+type ChatWorkspaceProps = UseChatWorkspaceOptions & {
+  currentUserPhone: string;
+  onLogout: () => void;
+};
 
-export function ChatWorkspace(options: ChatWorkspaceProps) {
+export function ChatWorkspace({ currentUserPhone, onLogout, ...options }: ChatWorkspaceProps) {
   const {
     activeChat,
     activeChatId,
@@ -29,14 +32,19 @@ export function ChatWorkspace(options: ChatWorkspaceProps) {
     isCreatingChat,
     messageText,
     messages,
+    newChatRecipient,
     realtimeStatus,
     realtimeStatusLabel,
     selectChat,
     selectInstance,
     sendMessage,
     setMessageText,
+    setNewChatRecipient,
     visibleChats
-  } = useChatWorkspace(options);
+  } = useChatWorkspace({
+    ...options,
+    currentUserPhone
+  });
 
   return (
     <ThemeProvider accent={activeChat?.messenger ?? activeInstance?.type}>
@@ -45,6 +53,9 @@ export function ChatWorkspace(options: ChatWorkspaceProps) {
           <header className={styles.topBar}>
             <div>
               <h1 className={styles.title}>Демо чат</h1>
+              {currentUserPhone ? (
+                <p className={styles.currentUser}>Вы вошли как {currentUserPhone}</p>
+              ) : null}
             </div>
             <div className={styles.sessionBar}>
               <span className={styles.connectionStatus} data-status={backendStatus}>
@@ -53,6 +64,9 @@ export function ChatWorkspace(options: ChatWorkspaceProps) {
               <span className={styles.connectionStatus} data-status={realtimeStatus}>
                 {realtimeStatusLabel}
               </span>
+              <button className={styles.connectionStatus} data-status={"logout"} onClick={onLogout}>
+                Выйти
+              </button>
             </div>
           </header>
 
@@ -68,9 +82,19 @@ export function ChatWorkspace(options: ChatWorkspaceProps) {
           >
             <div className={styles.chatPanel}>
               <div className={styles.newChatBar}>
+                <label className={styles.fieldLabel} htmlFor="new-chat-recipient">
+                  Номер получателя
+                </label>
+                <input
+                  className={styles.input}
+                  id="new-chat-recipient"
+                  onChange={(event) => setNewChatRecipient(event.target.value)}
+                  placeholder="+79991234567"
+                  value={newChatRecipient}
+                />
                 <button
                   className={styles.newChatButton}
-                  disabled={isCreatingChat}
+                  disabled={isCreatingChat || !newChatRecipient.trim()}
                   onClick={createChat}
                   type="button"
                 >

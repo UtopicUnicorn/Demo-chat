@@ -7,6 +7,8 @@ export const demoChats: Chat[] = [
     instanceId: "max-main",
     lastMessage: null,
     messenger: "max",
+    ownerPhone: "+70000000000",
+    participantPhones: ["+70000000000", "+7 999 123-45-67"],
     recipient: "+7 999 123-45-67",
     title: "Анна Иванова",
     updatedAt: "2026-10-02T06:20:00.000Z"
@@ -17,6 +19,8 @@ export const demoChats: Chat[] = [
     instanceId: "telegram-main",
     lastMessage: null,
     messenger: "telegram",
+    ownerPhone: "+70000000000",
+    participantPhones: ["+70000000000", "@demo_team"],
     recipient: "@demo_team",
     title: "Demo Team",
     updatedAt: "2026-10-02T07:05:00.000Z"
@@ -27,6 +31,8 @@ export const demoChats: Chat[] = [
     instanceId: "whatsapp-main",
     lastMessage: null,
     messenger: "whatsapp",
+    ownerPhone: "+70000000000",
+    participantPhones: ["+70000000000", "+7 912 000-13-37"],
     recipient: "+7 912 000-13-37",
     title: "Иван Петров",
     updatedAt: "2026-10-02T08:32:00.000Z"

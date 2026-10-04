@@ -11,11 +11,12 @@ import type { MessagingService } from "../services/messagingService.js";
 
 export function createChatsController(messagingService: MessagingService) {
   const listChats: RequestHandler = (request, response) => {
-    const instanceId =
-      typeof request.query.instanceId === "string" ? request.query.instanceId : undefined;
+    const query = request.query ?? {};
+    const instanceId = typeof query.instanceId === "string" ? query.instanceId : undefined;
+    const phone = typeof query.phone === "string" ? query.phone : undefined;
 
     response.json({
-      data: messagingService.listChats(instanceId)
+      data: messagingService.listChats(instanceId, phone)
     });
   };
 
@@ -24,6 +25,7 @@ export function createChatsController(messagingService: MessagingService) {
       const body = readBody(request.body);
       const chat = messagingService.createChat({
         instanceId: readRequiredString(body, "instanceId"),
+        ownerPhone: readOptionalString(body, "phone"),
         recipient: readRequiredString(body, "recipient"),
         title: readOptionalString(body, "title")
       });
@@ -43,7 +45,9 @@ export function createChatsController(messagingService: MessagingService) {
   const listMessages: RequestHandler = (request, response, next) => {
     try {
       const chatId = readRouteParam(request.params.chatId, "chatId");
-      const messages = messagingService.listMessages(chatId);
+      const query = request.query ?? {};
+      const phone = typeof query.phone === "string" ? query.phone : undefined;
+      const messages = messagingService.listMessages(chatId, phone);
 
       if (!messages) {
         throw new HttpError(404, "Chat not found");
@@ -63,6 +67,7 @@ export function createChatsController(messagingService: MessagingService) {
       const chatId = readRouteParam(request.params.chatId, "chatId");
       const message = messagingService.createMessage({
         chatId,
+        senderPhone: readOptionalString(body, "phone"),
         text: readRequiredString(body, "text")
       });
 
@@ -85,6 +90,7 @@ export function createChatsController(messagingService: MessagingService) {
       const message = messagingService.createMessage(
         {
           chatId,
+          senderPhone: readOptionalString(body, "phone"),
           text: readRequiredString(body, "text")
         },
         "incoming"

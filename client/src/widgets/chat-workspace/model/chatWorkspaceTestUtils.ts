@@ -17,6 +17,8 @@ export function createApiMock(overrides: Partial<MessagingApi> = {}): MessagingA
         instanceId: payload.instanceId,
         lastMessage: null,
         messenger: "max",
+        ownerPhone: payload.phone,
+        participantPhones: [payload.phone, payload.recipient],
         recipient: payload.recipient,
         title: payload.title ?? payload.recipient,
         updatedAt: timestamp
@@ -32,6 +34,25 @@ export function createApiMock(overrides: Partial<MessagingApi> = {}): MessagingA
       .mockImplementation(async (chatId) =>
         demoMessages.filter((message) => message.chatId === chatId)
       ),
+    sendMessage: jest
+      .fn<MessagingApi["sendMessage"]>()
+      .mockImplementation(async (chatId, payload) => {
+        const chat = demoChats.find((demoChat) => demoChat.id === chatId) ?? demoChats[0];
+
+        return {
+          chatId,
+          createdAt: "2026-10-03T10:00:00.000Z",
+          direction: "outgoing",
+          id: `${chatId}-sent-message`,
+          instanceId: chat.instanceId,
+          messenger: chat.messenger,
+          providerChatId: chat.recipient,
+          providerMessageId: `${chatId}-provider-sent-message`,
+          senderPhone: payload.phone,
+          status: "sent",
+          text: payload.text
+        };
+      }),
     ...overrides
   };
 }

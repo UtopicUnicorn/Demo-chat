@@ -20,6 +20,8 @@ export type Chat = {
   id: string;
   instanceId: string;
   messenger: MessengerType;
+  ownerPhone?: string;
+  participantPhones: string[];
   recipient: string;
   title: string;
   createdAt: string;
@@ -32,6 +34,7 @@ export type Message = {
   chatId: string;
   instanceId: string;
   messenger: MessengerType;
+  senderPhone?: string;
   direction: MessageDirection;
   providerChatId: string;
   providerMessageId: string;
@@ -42,6 +45,7 @@ export type Message = {
 
 export type CreateChatInput = {
   instanceId: string;
+  ownerPhone?: string;
   recipient: string;
   title?: string;
 };
@@ -50,5 +54,6 @@ export type CreateMessageInput = {
   chatId: string;
   providerChatId?: string;
   providerMessageId?: string;
+  senderPhone?: string;
   text: string;
 };

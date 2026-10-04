@@ -1,5 +1,11 @@
-import { ChatWorkspace } from "@/widgets/chat-workspace/ui/ChatWorkspace";
+import { BrowserRouter } from "react-router-dom";
+
+import { AppRoutes } from "@/router";
 
 export function App() {
-  return <ChatWorkspace />;
+  return (
+    <BrowserRouter>
+      <AppRoutes />
+    </BrowserRouter>
+  );
 }
