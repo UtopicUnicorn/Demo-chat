@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import styles from "./Auth.module.css";
 import { useNavigate } from "react-router-dom";
 import { PHONE_STORAGE_KEY } from "@/shared/constants";
@@ -7,7 +7,7 @@ export default function AuthWithPhone() {
   const [phoneNumber, setPhoneNumber] = useState("");
   const navigate = useNavigate();
 
-  function login(event: FormEvent<HTMLFormElement>) {
+  function login(event: ChangeEvent<HTMLFormElement>) {
     event.preventDefault();
     const trimmedPhoneNumber = phoneNumber.trim();
     if (!trimmedPhoneNumber) {
